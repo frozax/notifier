@@ -32,4 +32,10 @@ if __name__ == '__main__':
     except ImportError:
         _err("Could not import " + args.destination)
 
-    dest.send(source.get_text())
+    try:
+        source_data = source.get_text()
+    except:
+        source_data = "FATAL ERROR: Could not get data"
+        raise
+
+    dest.send(source_data)
