@@ -1,4 +1,5 @@
 import urllib.request
+import urllib.error
 import json
 import time
 from datetime import datetime, timedelta
@@ -9,8 +10,8 @@ class NotificationSource:
     def get_text(self):
         try:
             data = urllib.request.urlopen(PATH_TO_LATEST_BUILD % "backup").read()
-        except URLError:
-            return "Buildbot NOT running"
+        except urllib.error.URLError:
+            return "FATAL: Buildbot NOT running"
 
         j = json.loads(data.decode('utf8'))
         build_number = j["number"]
