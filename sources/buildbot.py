@@ -37,10 +37,9 @@ class NotificationSource:
             res = "ATTENTION: Dernier backup de + de 24h"
         else:
             res = ""
-        res = "Dernier backup le %s\n" % (end_date.strftime("%d %b à %H:%M"))
         if len(failed) > 0:
-            res += "%d ECHEC: %s" % (len(failed), ",".join(failed))
-        res += "\n"
+            res += "%d ECHEC: %s\n" % (len(failed), ",".join(failed))
+        res = "Dernier backup le %s\n" % (end_date.strftime("%d %b à %H:%M"))
         res += "succes: %d, ignorés: %d" % (success, skipped)
 
         return res
