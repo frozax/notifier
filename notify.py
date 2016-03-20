@@ -35,7 +35,7 @@ if __name__ == '__main__':
     try:
         source_data = source.get_text()
     except:
-        source_data = "FATAL ERROR: Could not get data"
+        source_data = "FATAL ERROR: Could not get data\n%s" % sys.exc_info()[0].__name__
         raise
 
     dest.send(source_data)
