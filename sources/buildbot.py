@@ -39,7 +39,6 @@ class NotificationSource:
             res = ""
         if len(failed) > 0:
             res += "%d ECHEC: %s\n" % (len(failed), ",".join(failed))
-        res = "Dernier backup le %s\n" % (end_date.strftime("%d %b à %H:%M"))
-        res += "succes: %d, ignorés: %d" % (success, skipped)
+        res += "succes: %d, ignorés: %d, %s" % (success, skipped, end_date.strftime("%d %b à %H:%M"))
 
         return res
