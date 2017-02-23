@@ -72,7 +72,7 @@ class NotificationSource:
                                                   self.format_td(results["duration"]),
                                                   results["start_date"].strftime("%d%b"))
             if res_prio:
-                full_res_prio = results["name"] + " " + res_prio + "\n"
+                full_res_prio += results["name"] + " " + res_prio + "\n"
             res += "\n"
 
         return full_res_prio + res
