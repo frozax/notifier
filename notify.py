@@ -8,6 +8,8 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Sends notifications")
     parser.add_argument("--source", "-s", type=str, default="helloworld",
                         help="Data to send")
+    parser.add_argument("--params", "-p", type=str, default="",
+                        help="argument to source")
     parser.add_argument("--destination", "-d", type=str, default="stdout",
                        help="Where to send data")
 
@@ -22,7 +24,10 @@ if __name__ == '__main__':
     args = parse_args()
     try:
         source_module = importlib.import_module("sources." + args.source)
-        source = source_module.NotificationSource()
+        if args.params:
+            source = source_module.NotificationSource(args.params)
+        else:
+            source = source_module.NotificationSource()
     except ImportError:
         _err("Could not import " + args.source)
 
