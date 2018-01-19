@@ -3,13 +3,17 @@ import urllib.error
 import json
 import time
 from datetime import datetime, timedelta
-from subprocess import check_output
+from subprocess import check_output, CalledProcessError
 
 class NotificationSource:
     def __init__(self, args):
         self.args = args
 
     def get_text(self):
-        ret = check_output(self.args, shell=True)
-        return ret.decode()
+        try:
+            ret = check_output(self.args, shell=True).decode()
+        except CalledProcessError as e:
+            ret = "CalledProcessError: %s" % (str(e))
+            ret += "\nOutput:\n" + e.output.decode()
+        return ret
 

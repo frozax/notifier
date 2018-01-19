@@ -29,7 +29,8 @@ def call(source, dest):
     try:
         source_data = source.get_text()
     except:
-        source_data = "FATAL ERROR: Could not get data\n%s" % sys.exc_info()[0].__name__
+        source_data = "FATAL ERROR: Could not get data\n%s\n%s" % (sys.exc_info()[0].__name__,
+                                                                   sys.exc_info()[1])
 
     dest.send(source_data)
 
