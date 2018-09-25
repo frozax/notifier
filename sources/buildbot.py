@@ -49,14 +49,12 @@ class NotificationSource:
 
         r1 = self.get_build_status("backup_work")
         r1["name"] = "wrk"
-        r2 = self.get_build_status("backup_salon")
-        r2["name"] = "sal"
 
         full_res_prio = ""
         res = ""
 
         res = ""
-        for results in [r1, r2]:
+        for results in [r1]:
             # res prio has data to be displayed first (crashes, errors)
             res_prio = ""
             res += results["name"] + " "
