@@ -8,7 +8,7 @@ import importlib
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Sends notifications\nExample: ./notify --source helloworld \"cmd echo toto\" helloworld")
-    parser.add_argument("--source", "-s", nargs="*", default="helloworld",
+    parser.add_argument("--source", "-s", nargs="*", default=["helloworld"],
                         help="Data to send")
     parser.add_argument("--destination", "-d", type=str, default="stdout",
                        help="Where to send data")
