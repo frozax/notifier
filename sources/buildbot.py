@@ -47,8 +47,8 @@ class NotificationSource:
 
     def get_text(self):
 
-        r1 = self.get_build_status("backup_work")
-        r1["name"] = "wrk"
+        r1 = self.get_build_status("backup_daily")
+        r1["name"] = "Backup"
 
         full_res_prio = ""
         res = ""
@@ -64,11 +64,13 @@ class NotificationSource:
                 failed = results["failed"]
                 if len(failed) > 0:
                     res_prio += "FAIL:%d(%s) " % (len(failed), ",".join(failed))
-                if results["too_long"]:
+                elif results["too_long"]:
                     res_prio += "WARN: Backup too old!"
-                res += "OK:%d SKIP:%d dur:%s %s" % (results["success"], results["skipped"],
-                                                  self.format_td(results["duration"]),
-                                                  results["start_date"].strftime("%d%b"))
+                elif results["skipped"] > 0:
+                    res_prio += "WARN: Skipped? how to deal with it?"
+                else:
+                    res += "OK (duration:%s date:%s)" % (self.format_td(results["duration"]),
+                                                  results["start_date"].strftime("%d %b"))
             if res_prio:
                 full_res_prio += results["name"] + " " + res_prio + "\n"
             res += "\n"
