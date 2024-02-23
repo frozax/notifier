@@ -7,9 +7,11 @@ import argparse
 import importlib
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Sends notifications\nExample: ./notify --source helloworld \"cmd echo toto\" helloworld")
-    parser.add_argument("--source", "-s", nargs="*", default=["helloworld"],
+    parser = argparse.ArgumentParser(description="Sends notifications")
+    parser.add_argument("--source", "-s", type=str, default="helloworld",
                         help="Data to send")
+    parser.add_argument("--params", "-p", type=str, default="",
+                        help="argument to source")
     parser.add_argument("--destination", "-d", type=str, default="stdout",
                        help="Where to send data")
     parser.add_argument("--cron", type=str, default="",
@@ -23,11 +25,9 @@ def _err(s):
     sys.exit(1)
 
 
-def call(sources, dest):
-    source_data = ""
+def call(source, dest):
     try:
-        for source in sources:
-            source_data += source.get_text() + "\n"
+        source_data = source.get_text()
     except:
         source_data = "FATAL ERROR: Could not get data\n%s\n%s" % (sys.exc_info()[0].__name__,
                                                                    sys.exc_info()[1])
@@ -36,16 +36,12 @@ def call(sources, dest):
 
 if __name__ == '__main__':
     args = parse_args()
-    sources = []
     try:
-        for source in args.source:
-            source_split = source.split()
-            source_cmd, source_param = source_split[0], ' '.join(source_split[1:])
-            source_module = importlib.import_module("sources." + source_cmd)
-            if source_param:
-                sources.append(source_module.NotificationSource(source_param))
-            else:
-                sources.append(source_module.NotificationSource())
+        source_module = importlib.import_module("sources." + args.source)
+        if args.params:
+            source = source_module.NotificationSource(args.params)
+        else:
+            source = source_module.NotificationSource()
     except ImportError:
         _err("Could not import " + args.source)
 
@@ -66,8 +62,8 @@ if __name__ == '__main__':
         print("Initial sleep %d minutes" % initial_sleep)
         time.sleep(initial_sleep * 60)
         while True:
-            call(sources, dest)
+            call(source, dest)
             print("Sleep %d seconds" % (day_min * 60))
             time.sleep(day_min * 60)
     else:
-        call(sources, dest)
+        call(source, dest)
